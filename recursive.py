@@ -35,15 +35,13 @@
 # 2. Only RHS reaches the full height of the tree
 # 3. Both LHS & RHS reach full height of tree
 
-PRIME_MOD = 9901
-
 
 def count_strict_trees(n, k):
     if n % 2 == 0:
         return 0
     answer = num_trees_at_height(n, k)
     print(answer)
-    return answer % PRIME_MOD
+    return answer
 
 
 def num_trees_at_height(nodes_left, height):

@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-PRIME_MOD = 9901
-
 
 def count_strict_trees(n, k):
     trees_per = [[0]*(k+1) for i in range(n+1)]
@@ -11,7 +9,7 @@ def count_strict_trees(n, k):
             sum_up_trees(trees_per, nodes, h)
 
     print('Real answer: {}'.format(trees_per[n][k]))
-    return trees_per[n][k] % PRIME_MOD
+    return trees_per[n][k]
 
 
 def sum_up_trees(a, n, depth):

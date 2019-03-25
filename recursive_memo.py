@@ -1,16 +1,13 @@
 #!/usr/bin/env python
 
 
-PRIME_MOD = 9901
-
-
 memoized_trees_at_nodes_and_height = [[-1] * 100 for y in range(200)]
 def count_strict_trees(n, k):
     if n % 2 == 0:
         return 0
     answer = num_trees_at_height(n, k)
     print(answer)
-    return answer % PRIME_MOD
+    return answer
 
 
 def num_trees_at_height(nodes_left, height):
