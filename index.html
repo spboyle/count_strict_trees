@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Copied from http://bl.ocks.org/NPashaP/7683252 -->
 <meta charset="utf-8">
 <style>
 
@@ -86,6 +87,23 @@ function tree(){
     return innerHeight(tree.vis);
   }
 
+  function sizeInner(n) {
+    if ( n ) {
+      var left_size = sizeInner(n.c[0]);
+      var right_size = sizeInner(n.c[1]);
+      return 1 + left_size + right_size;
+    }
+    return 0;
+  }
+
+  tree.leftSize = function(){
+    return sizeInner(tree.vis.c[0]);
+  }
+
+  tree.rightSize = function(){
+    return sizeInner(tree.vis.c[1]);
+  }
+
   tree.getEdges =  function(){
     var e =[];
     function getEdges(_){
@@ -103,16 +121,6 @@ function tree(){
     }
     addLeaf(tree.vis);
     reposition(tree.vis);
-    // if(tree.glabels.length != 0){
-    //   tree.glabels =[]
-    //   relabel(
-    //     {
-    //       lbl:d3.range(0, tree.size).map(function(d){ return '';}),
-    //       incMatx:d3.range(0,tree.size-1).map(function(){ return 0;})
-    //     });
-    //   d3.select("#labelnav").style('visibility','hidden');
-    // }
-    // else tree.incMatx = d3.range(0,tree.size-1).map(function(){ return 0;});
     redraw();
   }
 
@@ -144,7 +152,6 @@ function tree(){
     d3.range(0, tree.size).forEach(function(d){ vlbls =[d]; elbls=[]; gracefulLbl(1); });
     tree.showLabel(1);
     d3.select("#labelpos").text(tree.currLbl+'/'+tree.glabels.length);
-    // d3.select("#labelnav").style('visibility','visible');
   }
 
   updateIncMatx = function(){
@@ -209,39 +216,10 @@ function tree(){
       .transition().duration(500)
       .attr('x',function(d){ return d.p.x;}).attr('y',function(d){ return d.p.y+5;});
 
-    // d3.select("#treesvg").attr("height", svgH);
-
-    // var elabels = d3.select("#g_elabels").selectAll('text').data(tree.getEdges());
-
-    // elabels
-    //   .attr('x',function(d){ return (d.p1.x+d.p2.x)/2+(d.p1.x < d.p2.x? 8: -8);}).attr('y',function(d){ return (d.p1.y+d.p2.y)/2;})
-    //   .text(function(d){return tree.glabels.length==0? '': Math.abs(d.l1 -d.l2);});
-
-    // elabels.enter().append('text')
-    //   .attr('x',function(d){ return (d.p1.x+d.p2.x)/2+(d.p1.x < d.p2.x? 8: -8);}).attr('y',function(d){ return (d.p1.y+d.p2.y)/2;})
-    //   .text(function(d){return tree.glabels.length==0? '': Math.abs(d.l1 -d.l2);});
-
-
-    // d3.select('#incMatx').selectAll(".incrowlabel").data(tree.size).enter();
-    //   .enter().append('g').attr('class','incrow');
-
-    // d3.select('#incMatx').selectAll(".incrow").selectAll('.incRect')
-    //   .data(function(d,i){ return getIncMatxRow(i).map(function(v,j){return {y:i, x:j, f:v};})})
-    //   .enter().append('rect').attr('class','incRect');
-
-    // d3.select('#incMatx').selectAll('.incRect')
-    //   .attr('x',function(d,i){ return (d.x+d.y)*tree.incS;}).attr('y',function(d,i){ return d.y*tree.incS;})
-    //   .attr('width',function(){ return tree.incS;}).attr('height',function(){ return tree.incS;})
-    //   .attr('fill',function(d){ return d.f == 1? 'black':'white'});
-
-    // d3.select("#incMatx").selectAll('.incrowlabel').data(d3.range(0,tree.size)).enter()
-    //   .append('text').attr('class','incrowlabel');
-    // d3.select("#navdiv").text(tree.size);
-    // d3.select("#navdiv").append("text").text("N: ");
     d3.select("#treeSize").text(tree.size);
     d3.select("#treeHeight").text(tree.height());
-    // d3.select("#incMatx").selectAll('.incrowlabel').text(function(d){ return d;})
-    //   .attr('x',function(d,i){ return (i-0.5)*tree.incS}).attr('y',function(d,i){ return (i+0.8)*tree.incS});
+    d3.select("#leftSubtreeSize").text(tree.leftSize());
+    d3.select("#rightSubtreeSize").text(tree.rightSize());
   }
 
   getLeafCount = function(_){
@@ -262,23 +240,24 @@ function tree(){
   initialize = function(){
     d3.select("body").append("div").attr('id','navdiv');
 
-    d3.select("#navdiv").append("text").text("N: ");
+    // Number of nodes label
+    d3.select("#navdiv").append("text").text("Nodes: ");
     d3.select("#navdiv").append("span").attr('id', 'treeSize').text(tree.size);
-    d3.select("#navdiv").append("p")
-    d3.select("#navdiv p").append("span").text("H: ");
+
+    // Height label
+    d3.select("#navdiv").append("p").attr('id', 'treeHeightContainer');
+    d3.select("#navdiv p").append("span").text("Height: ");
     d3.select("#navdiv p").append("span").attr('id', 'treeHeight').text(tree.height());
 
-      // .on('click',function(d){return tree.gracefulLabels();});
+    // Left subtree label
+    d3.select("#navdiv").insert('p', '#treeHeightContainer + *').attr('id', 'leftSubtreeSizeContainer');
+    d3.select("#leftSubtreeSizeContainer").append("span").text("Left Subtree: ");
+    d3.select("#leftSubtreeSizeContainer").append("span").attr('id', 'leftSubtreeSize').text(tree.leftSize());
 
-    // d3.select("#navdiv").append("nav").attr('id','labelnav').style('display','inline-block').style('visibility','hidden');
-
-    // d3.select("#labelnav").append("button").attr('type','button').text('<').attr('id','prevlabel')
-    //   .on('click',function(d){return tree.showLabel(tree.currLbl == 1? tree.glabels.length: tree.currLbl-1);});
-
-    // d3.select("#labelnav").append("text").text('').attr('id','labelpos');
-
-    // d3.select("#labelnav").append("button").attr('type','button').text('>').attr('id','nextlabel')
-    //   .on('click',function(){return tree.showLabel(tree.currLbl == tree.glabels.length? 1: tree.currLbl+1);});
+    // Right subtree label
+    d3.select("#navdiv").insert("p", '#leftSubtreeSizeContainer + *').attr('id', 'rightSubtreeSizeContainer');
+    d3.select("#rightSubtreeSizeContainer").append("span").text("Right Subtree: ");
+    d3.select("#rightSubtreeSizeContainer").append("span").attr('id', 'rightSubtreeSize').text(tree.rightSize());
 
     d3.select("body").append("svg").attr("width", svgW).attr("height", svgH).attr('id','treesvg');
 
@@ -299,15 +278,6 @@ function tree(){
       .text(function(d){return tree.glabels.length==0? '': Math.abs(d.l1 -d.l2);});
 
     d3.select("body").select("svg").append('g').attr('transform',function(){ return 'translate('+tree.incX+','+tree.incY+')';})
-      // .attr('id','incMatx').selectAll('.incrow')
-      // .data(tree.incMatx.map(function(d,i){ return {i:i, r:d};})).enter().append('g').attr('class','incrow');
-
-    // d3.select("#incMatx").selectAll('.incrowlabel').data(d3.range(0,tree.size)).enter()
-    //   .append('text').attr('class','incrowlabel').text(function(d){ return d;})
-    //   .attr('x',function(d,i){ return (i-0.5)*tree.incS}).attr('y',function(d,i){ return (i+.8)*tree.incS});
-
-    // tree.addLeaf(0);
-    // tree.addLeaf(0);
   }
   initialize();
 
