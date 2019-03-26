@@ -1,40 +1,5 @@
 #!/usr/bin/env python
 
-# Count the number of different strict binary trees of
-# height K that can be made from N nodes.
-# Strict binary tree = every non-leaf node has two children
-#
-# To count number of trees for 11 nodes:
-# Remove one node -- this is the root for our right & left subtrees
-#
-# With remaining ten nodes, divide them between left and right subtrees
-#   * each subtree must get an odd number of nodes
-# LHS   RHS
-# 1     9
-# 3     7
-# 5     5
-# 7     3
-# 9     1
-#
-# Example: 11
-#                x         x         x         x         x
-#               / \   +   / \   +   / \   +   / \   +   / \
-#              1   9     3   7     5   5     7   3     9   1
-#
-#              f(11) = f(1)*f(9) + f(3)*f(7) + f(5)*f(5) + f(7)*f(3) + f(9)*f(1)
-#
-# Example: 9
-#                x         x         x         x
-#               / \   +   / \   +   / \   +   / \
-#              1   7     3   5     5   3     7   1
-#
-#              f(9) = f(1)*f(7) + f(3)*f(5) + f(5)*f(3) + f(7)*f(1)
-#
-# For each pair of sizes of LHS and RHS subtrees, there are three cases to consider:
-# 1. Only LHS reaches the full height of the tree
-# 2. Only RHS reaches the full height of the tree
-# 3. Both LHS & RHS reach full height of tree
-
 
 def count_strict_trees(n, k):
     if n % 2 == 0:
