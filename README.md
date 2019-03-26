@@ -45,3 +45,6 @@ For each pair of sizes of LHS and RHS subtrees, there are three cases to conside
 ![](RightSubtreeLonger.png)
 3. Both LHS & RHS reach full height of tree
 ![](EqualHeightSubtrees.png)
+
+## Playing around
+You can open up index.html to see what it looks like to build strict binary trees. Click on a node to give it two children.
