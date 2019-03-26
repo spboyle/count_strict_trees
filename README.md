@@ -42,6 +42,6 @@ For each pair of sizes of LHS and RHS subtrees, there are three cases to conside
 1. Only LHS reaches the full height of the tree
 ![](LeftSubtreeLonger.png)
 2. Only RHS reaches the full height of the tree
-![](LeftSubtreeLonger.png)
+![](RightSubtreeLonger.png)
 3. Both LHS & RHS reach full height of tree
 ![](EqualHeightSubtrees.png)
