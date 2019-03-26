@@ -24,14 +24,17 @@ def num_trees_at_height(nodes_left, height):
     # Note that in this loop, the right tree always has more nodes than left tree
     for left_half in range(1, half_of_nodes, 2):
         right_half = nodes_left - 1 - left_half
+        # case 1
         lhs_reaches_height = (
             num_trees_at_height(left_half, subtree_height) *
             num_trees_at_most_height(right_half, subtree_height-1)
         )
+        # case 2
         rhs_reaches_height = (
             num_trees_at_most_height(left_half, subtree_height-1) *
             num_trees_at_height(right_half, subtree_height)
         )
+        # case 3
         equal_height = (
             num_trees_at_height(left_half, subtree_height) *
             num_trees_at_height(right_half, subtree_height)

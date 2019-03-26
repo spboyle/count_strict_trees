@@ -1,5 +1,5 @@
 # Count Strict Binary Trees
-Farmer John is keeping track of his cows' pedigrees. He starts with one cow, and his cows only give birth to twins. After K generations of cows, Farmer John now has N cows. How many different pedigrees are possible? A pedigree is considered unique if its tree structre is unique.
+Farmer John is keeping track of his cows' pedigrees. He starts with one cow, and his cows only give birth to twins. After K generations of cows, Farmer John now has N cows. How many different pedigrees are possible? A pedigree is considered unique if its tree structre is unique. N <= 200; K <= 100.
 
 # Breakdown
 
